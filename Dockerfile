@@ -34,7 +34,7 @@ EXPOSE 22
 
 COPY start.sh /usr/local/bin/start.sh
 RUN chmod +x /usr/local/bin/start.sh
-
+RUN python3 -m pip install --no-cache-dir numpy
 WORKDIR /workspace
 
 ENTRYPOINT ["/usr/local/bin/start.sh"]
