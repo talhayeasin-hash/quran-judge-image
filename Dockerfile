@@ -24,14 +24,17 @@ RUN (ollama serve > /tmp/ollama-build.log 2>&1 &) \
     && ollama list \
     && pkill ollama || true
 
-RUN mkdir -p /var/run/sshd /root/.ssh && chmod 700 /root/.ssh && ssh-keygen -A \
+RUN mkdir -p /var/run/sshd /root/.ssh \
+    && chmod 700 /root/.ssh \
+    && ssh-keygen -A \
     && sed -ri 's/^#?PermitRootLogin.*/PermitRootLogin prohibit-password/' /etc/ssh/sshd_config \
     && sed -ri 's/^#?PasswordAuthentication.*/PasswordAuthentication no/' /etc/ssh/sshd_config
 
 EXPOSE 22
+
 COPY start.sh /usr/local/bin/start.sh
 RUN chmod +x /usr/local/bin/start.sh
 
 WORKDIR /workspace
 
-CMD ["/usr/local/bin/start.sh"]
+ENTRYPOINT ["/usr/local/bin/start.sh"]
